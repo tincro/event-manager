@@ -7,17 +7,11 @@ def clean_zipcode(zipcode)
 end
 
 def clean_phone(phone)
-        # strip non-integers
-        # if phone < 10 digits == bad
-        # if phone == 10, phone == good
-        # if phone == 11 && phone[0] == '1', phone[1:]
-        # if phone == 11 && phone[0] != 1, phone == bad
-        # if phone > 11 digits, phone == bad
         phone = phone.delete(" ()-")
 
         if phone.length > 11 || phone.length < 10
             phone = nil.to_s
-        elsif phone.to_s.start_with('1') && phone.length > 10
+        elsif phone.to_s.start_with?('1') && phone.length > 10
             phone.to_s[1..10]
         else
             phone.to_s[0..9]
@@ -51,7 +45,7 @@ end
 
 puts 'EventManager initialized!'
 
-file = 'event_attendees.csv'
+csv_file = 'event_attendees.csv'
 
 File.exist? csv_file
     contents = CSV.open(
@@ -76,4 +70,8 @@ File.exist? csv_file
         form_letter = erb_template.result(binding)
 
         save_thank_you_letter(id, form_letter)
+
+        if !phone.empty?
+            puts "You can sign up for mobile alerts with your number: #{phone}."
+        end
     end
