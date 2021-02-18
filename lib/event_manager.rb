@@ -1,6 +1,7 @@
 require 'csv'
 require 'google/apis/civicinfo_v2'
 require 'erb'
+require 'time'
 
 def clean_zipcode(zipcode)
     zipcode.to_s.rjust(5, '0')[0..4]
@@ -74,4 +75,23 @@ File.exist? csv_file
         if !phone.empty?
             puts "You can sign up for mobile alerts with your number: #{phone}."
         end
+
+        # time registration
+        # get the peak registration times according to the registered times
+        reg_date = row[:regdate]
+        d = reg_date.split[0]
+        time = reg_date.split[1]
+        # swap the year and days
+        cal = d.split('/')
+        year = cal.pop
+        cal.unshift(year).join('/')
+        # find the hours most common
+        #parse hours from time
+        hour = Time.strftime(time)
+        ## add hours to array
+        ## count number of occurrences
+        ## return most common
+        hours = Array.new
+        hours.push(time)
+
     end
